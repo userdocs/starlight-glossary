@@ -3,6 +3,9 @@ title: test
 hide_title: true
 ---
 
+
+import { Image } from 'astro:assets';
+import Test from '/src/content/images/test.png';
 import Modal from "/src/components/modal.astro"
 
 1 <Modal id="bash" label="bash"/> 2 <Modal id="buildjet" label="buildjet"/> 3 <Modal id="crossbuild-essentials" label="crossbuild-essentials"/> 4 <Modal id="docker" label="docker"/> 5 <Modal id="docker-desktop" label="docker-desktop"/>
@@ -12,3 +15,66 @@ import Modal from "/src/components/modal.astro"
 <Modal id="powershell" label="powershell"/>
 <Modal id="qemu" label="qemu"/>
 <Modal id="wsl2" label="wsl2"/>
+
+## Modal Glossary entries
+
+I have glossary entries defined in markdown files located in `/src/content/docs/glossary` [on github](https://github.com/userdocs/starlight-glossary/tree/main/src/content/docs/glossary)
+
+They are called using the `/src/components/modal.astro` component. [on github](https://github.com/userdocs/starlight-glossary/blob/main/src/components/modal.astro)
+
+Like this, to create an interactive glossary modal when clicked on:
+
+```mdx
+import Modal from "/src/components/modal.astro"
+
+1 <Modal id="bash" label="bash"/> 2 <Modal id="buildjet" label="buildjet"/> 3 <Modal id="crossbuild-essentials" label="crossbuild-essentials"/> 4 <Modal id="docker" label="docker"/> 5 <Modal id="docker-desktop" label="docker-desktop"/>
+6 <Modal id="github" label="github"/> 7 <Modal id="github-actions" label="github-actions"/> 8 <Modal id="github-releases" label="github-releases"/> 9 <Modal id="github-workflows" label="github-workflows"/> 10 <Modal id="glibc" label="glibc"/>
+<Modal id="musl-cross-make" label="musl-cross-make"/>
+<Modal id="muslc" label="muslc"/>
+<Modal id="powershell" label="powershell"/>
+<Modal id="qemu" label="qemu"/>
+<Modal id="wsl2" label="wsl2"/>
+```
+
+## The interaction
+
+The glossary files are formatted like this
+
+```md
+---
+title: title
+hide_title: true
+---
+
+🟦 Section 1
+
+--- // how the file is split into sections
+
+Section 2
+```
+
+Example: <Modal id="test" label="Test glossary entry"/>
+
+<Image
+  src={Test}
+  alt=""
+/>
+
+## Glossary page and automatic links
+
+There is also a dynamically generated glossary page populated by `/src/components/glossary.astro`  [on github](https://github.com/userdocs/starlight-glossary/blob/main/src/components/glossary.astro)
+
+[glossary](/starlight-glossary/glossary)
+
+
+## The problem
+
+I had to use javascript to create the dialog and prepend it to the body. This allowed me to inline them. Nothing else i tried worked as something about the `<dialog></dialog>` and maybe mdx adds unwanted `<p>` elements.
+
+I think the idea of a glossary was good and it started with this docusaurus plugin: https://github.com/grnet/docusaurus-terminology
+
+But it always felt over complicated for the task it wanted to achieve. I think this astro version is much simpler and easier to maintain.
+
+So this a combined effort of copilot, Kapa and I to create what seems like a functional proof of concept that does not offend page speed.
+
+I though it easier to explain here that discord but i'm looking for feedback on this approach and if it's a good idea to continue with it.
