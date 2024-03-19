@@ -37,7 +37,7 @@ const sections = files.reduce((acc, file) => {
       <ul>
         {section[1].map((file) => (
           <li>
-            <a href={"glossary/" + file.title}>{file.title}</a>
+            <a href={"/glossary/" + file.title}>{file.title}</a>
           </li>
         ))}
       </ul>
