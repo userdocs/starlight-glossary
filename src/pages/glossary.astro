@@ -32,7 +32,13 @@ const sections = files.reduce((acc, file) => {
 }, {});
 ---
 
-<StarlightPage headings={sections}>
+<StarlightPage
+  frontmatter={{ title: "My custom page" }}
+  headings={[
+    { depth: 2, slug: "section-1", text: "Section 1" },
+    // Add more headings as needed
+  ]}
+>
   {
     Object.entries(sections).map((section) => (
       <>
