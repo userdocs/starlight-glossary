@@ -22,7 +22,7 @@ const files = filenames.map((filename) => {
 files.sort((a, b) => a.title.localeCompare(b.title));
 
 // Group the files by the first letter of their title
-const sections = files.reduce((acc, file) => {
+const sections = files.reduce((acc: { [key: string]: any[] }, file) => {
   const firstLetter = file.title.charAt(0).toUpperCase();
   if (!acc[firstLetter]) {
     acc[firstLetter] = [];
