@@ -31,7 +31,7 @@ const sections = files.reduce((acc, file) => {
   return acc;
 }, {});
 
-const headings = Object.entries(sections).map((section) => ({
+const headings = Object.entries(sections).map((section: [string, any]) => ({
   depth: 2,
   slug: section[0],
   text: section[0],
