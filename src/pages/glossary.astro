@@ -1,56 +1,55 @@
 ---
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+const basePath = `/${Astro.url.pathname.split("/")[1]}`;
 
 interface File {
-	fileBase: string;
-	title: string;
+  fileBase: string;
+  title: string;
 }
 
 const importedFiles = await Astro.glob("/src/content/docs/glossary/*.md");
 
 const files: File[] = importedFiles.map(({ file, frontmatter: { title } }) => {
-	const fileBase = file.toString().split("/").pop()?.split(".").shift();
-	return { fileBase, title };
+  const fileBase = file.toString().split("/").pop()?.split(".").shift();
+  return { fileBase, title };
 });
 
 const sections = files.reduce(
-	(acc: { [key: string]: File[] }, { title, fileBase }) => {
-		const firstLetter = title.charAt(0).toUpperCase();
-		if (!acc[firstLetter]) {
-			acc[firstLetter] = [];
-		}
-		acc[firstLetter].push({ fileBase, title });
-		return acc;
-	},
-	{}
+  (acc: { [key: string]: File[] }, { title, fileBase }) => {
+    const firstLetter = title.charAt(0).toUpperCase();
+    if (!acc[firstLetter]) {
+      acc[firstLetter] = [];
+    }
+    acc[firstLetter].push({ fileBase, title });
+    return acc;
+  },
+  {}
 );
 
 const headings = Object.entries(sections).map(
-	([slug, _]: [string, File[]]) => ({
-		depth: 2,
-		slug,
-		text: slug,
-	})
+  ([slug, _]: [string, File[]]) => ({
+    depth: 2,
+    slug,
+    text: slug,
+  })
 );
 
 console.log(headings);
 ---
 
 <StarlightPage frontmatter={{ title: "Glossary" }} headings={headings}>
-	{
-		Object.entries(sections).map(([sectionTitle, files]: [string, File[]]) => (
-			<>
-				<h2 id={sectionTitle}>{sectionTitle}</h2>
-				<ul>
-					{files.map(({ fileBase, title }: File) => (
-						<li>
-							<a href={`/qbittorrent-nox-static/glossary/${fileBase}`}>
-								{title}
-							</a>
-						</li>
-					))}
-				</ul>
-			</>
-		))
-	}
+  {
+    Object.entries(sections).map(([sectionTitle, files]: [string, File[]]) => (
+      <>
+        <h2 id={sectionTitle}>{sectionTitle}</h2>
+        <ul>
+          {files.map(({ fileBase, title }: File) => (
+            <li>
+              <a href={`${basePath}/${fileBase}`}>{title}</a>
+            </li>
+          ))}
+        </ul>
+      </>
+    ))
+  }
 </StarlightPage>
